@@ -1,8 +1,7 @@
 
 # Insufficient Storage for Remote Engine Container Image
 
-When installing the Remote Engine container image, you may encounter the following error:
-
+## Error Message
 ```
 Error: writing blob: adding layer with blob "sha256:..." unpacking failed (error: exit status 1; output: open /usr/share/zoneinfo/zone.tab: no space left on device)
 docker run return code: 125.
