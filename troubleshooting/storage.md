@@ -11,7 +11,7 @@ docker run return code: 125.
 
 ## Root Cause
 
-Podman stores container layers, metadata, and volumes in `/var` by default. For Remote Engine installation, it is recommended to have **at least 50 GB of free space** in `/var`.
+Podman stores container layers, metadata, and volumes in `/var/lib/containers` for root containers and `$HOME/.local/share/containers` for rootless containers, by default. For Remote Engine installation as either rootful or rootless Podman, it is recommendeded to have at least 50 GB of free space in at least one of these directories.
 
 Check available space:
 
