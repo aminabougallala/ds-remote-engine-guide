@@ -1,4 +1,5 @@
-# 🐳 Issue 102: Insufficient Storage for Remote Engine Container Image
+
+# Insufficient Storage for Remote Engine Container Image
 
 When installing the Remote Engine container image, you may encounter the following error:
 
