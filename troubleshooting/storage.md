@@ -1,8 +1,8 @@
+# 🐳 Podman Runtime – Issue 102
 
-# Insufficient Storage for Remote Engine Container Image
+## 🚨 Insufficient Storage for Remote Engine Container Image
 
-## Error Message
-```
+```shell
 Error: writing blob: adding layer with blob "sha256:..." unpacking failed (error: exit status 1; output: open /usr/share/zoneinfo/zone.tab: no space left on device)
 docker run return code: 125.
 ```
@@ -11,9 +11,9 @@ docker run return code: 125.
 
 ## 💡 Root Cause
 
-Docker/Podman stores container layers, metadata, and volumes in `/var` by default. For Remote Engine installation, **at least 50 GB of free space** is recommended in `/var`.
+Podman stores container layers, metadata, and volumes in `/var` by default. For Remote Engine installation, it is recommended to have **at least 50 GB of free space** in `/var`.
 
-Check available space with:
+Check available space:
 
 ```bash
 df -h /var
@@ -21,9 +21,9 @@ df -h /var
 
 **Example output:**
 
-```
+```shell
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/xvda4      8.8G  42.4G 52.8G 81% /
+/dev/xvda4      8.8G  42.4G  52.8G  81% /
 ```
 
 ---
@@ -32,109 +32,101 @@ Filesystem      Size  Used Avail Use% Mounted on
 
 ### Option 1: Clean Up Container Storage
 
-Free up space in `/var` by removing unused container images:
+Free up disk space by removing unused container images:
 
 ```bash
 podman system prune
 ```
 
-> ⚠️ **Caution:** This removes *all unused images*, not just dangling ones. Confirm with the client before executing.
+> [!IMPORTANT]  
+> This will remove **all unused images**, including those that were manually pulled but aren't currently running.
+
+> [!TIP]  
+> Confirm with the user before executing, especially in environments where image cleanup could impact other workloads.
 
 ---
 
-### Option 2: Modify `storage.conf` to Use Another Volume
+### Option 2: Modify Container Storage Location
 
-#### 🛠️ Part 1: Mount Additional Volume
-
-1. **Check for available disk:**
-
-```bash
-lsblk
-```
-
-**Example output:**
-
-```
-NAME    MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
-xvda    202:0    0   10G  0 disk
-└─xvda4 202:4    0  9.3G  0 part /
-xvdb    202:16   0   20G  0 disk
-```
-
-2. **Create filesystem on unmounted disk (e.g. `/dev/xvdb`):**
-
-```bash
-sudo mkfs.xfs /dev/xvdb
-```
-
-3. **Create mount point and mount it:**
-
-```bash
-sudo mkdir -p /mnt/data
-sudo mount /dev/xvdb /mnt/data
-```
-
-4. **Verify mount:**
-
-```bash
-df -h
-```
-
-**Expected output:**
-
-```
-Filesystem      Size  Used Avail Use% Mounted on
-/dev/xvdb        20G  175M   20G   1% /mnt/data
-```
-
-5. **Persist the mount across reboots:**
-
-Edit `/etc/fstab` and add:
-
-```
-/dev/xvdb /mnt/data xfs defaults 0 0
-```
+If `/var` is full, use another mounted volume for container storage.
 
 ---
 
-#### 📦 Part 2: Create Container Storage Directories
+#### 🔧 Part 1: Mount a New Volume
 
-For **rootful** Podman:
+1. Check available volumes:
+
+    ```bash
+    lsblk
+    ```
+
+2. Format the new volume (e.g. `/dev/xvdb`):
+
+    ```bash
+    sudo mkfs.xfs /dev/xvdb
+    ```
+
+3. Mount the volume:
+
+    ```bash
+    sudo mkdir -p /mnt/data
+    sudo mount /dev/xvdb /mnt/data
+    ```
+
+4. Make it persistent after reboot:
+
+    ```bash
+    sudo nano /etc/fstab
+    ```
+
+    Add this line:
+
+    ```text
+    /dev/xvdb /mnt/data xfs defaults 0 0
+    ```
+
+> [!NOTE]  
+> You can validate with `df -h` to confirm `/mnt/data` is mounted correctly.
+
+---
+
+#### 📁 Part 2: Set Up Storage Directories
 
 ```bash
+# For rootful Podman
 sudo mkdir -p /mnt/data/containers/storage_root
-```
 
-For **rootless** Podman:
-
-```bash
+# For rootless Podman
 sudo mkdir -p /mnt/data/containers/storage_rootless
 ```
 
-If unsure which mode the client is using, create both.
+If you’re unsure, create both.
 
 ---
 
-#### 🔐 Part 3: SELinux (if enabled)
+#### 🔐 Part 3: Set SELinux Context (Rootful Only)
 
-Check SELinux status:
+Check if SELinux is enforcing:
 
 ```bash
 getenforce
 ```
 
-If result is `Enforcing`, run:
+If it returns `Enforcing`, run:
 
 ```bash
 sudo semanage fcontext -a -e /var/lib/containers/storage /mnt/data/containers/storage_root
 sudo restorecon -R -v /mnt/data/containers/storage_root
 ```
 
+> [!NOTE]  
+> SELinux adjustments are **not required** for rootless containers.
+
 ---
 
-#### 👤 Part 4: Set Ownership for Rootless Storage
+#### 👤 Part 4: Adjust Ownership for Rootless Podman
 
-If running rootless (e.g., user is `amin`):
+If the user is `amin`, grant permissions:
 
 ```bash
 sudo chown -R amin:amin /mnt/data/containers/storage_rootless
@@ -142,50 +134,48 @@ sudo chown -R amin:amin /mnt/data/containers/storage_rootless
 
 ---
 
-#### 📝 Part 5: Modify `storage.conf`
+#### ⚙️ Part 5: Edit `storage.conf`
 
-Edit the config file:
+Open the config:
 
 ```bash
 sudo nano /etc/containers/storage.conf
 ```
 
-For **rootful** Podman:
+- For **rootful** users, change:
 
-Change the `graphroot` path:
+    ```ini
+    graphroot = "/mnt/data/containers/storage_root"
+    ```
 
-```ini
-graphroot = "/mnt/data/containers/storage_root"
-```
+- For **rootless** users, uncomment and change:
 
-For **rootless** Podman:
-
-Uncomment and update the `rootless_storage_path`:
-
-```ini
-rootless_storage_path = "/mnt/data/containers/storage_rootless"
-```
+    ```ini
+    rootless_storage_path = "/mnt/data/containers/storage_rootless"
+    ```
 
 ---
 
-### 🔍 Verify the Changes
+### ✅ Final Step: Verify Configuration
 
-Run:
+Check that Podman recognizes the new storage paths:
 
 ```bash
 podman info
 ```
 
-Look for updated paths:
+Look for this in the output:
 
-```
+```text
 store:
-  ...
   graphRoot: /mnt/data/containers/storage_rootless
   ...
   volumePath: /mnt/data/containers/storage_rootless/volumes
 ```
 
 ---
+
+> [!SUCCESS]  
+> You’re all set! The Remote Engine container image should now install without storage-related errors.
 
 ✅ You’re all set! The Remote Engine container image should now install successfully using the new storage path.
