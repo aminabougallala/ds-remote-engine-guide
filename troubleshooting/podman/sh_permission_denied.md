@@ -79,7 +79,7 @@ export VOLUME_DIR=test/docker/volumes
 
 ### Disable SELinux Enforcement
 
-Even if the volume directory is mounted correctly, SELinux can prevent the container from accessing/executing the `init.sh` script.
+Even if the user has proper permissions in the volume directory, SELinux can still prevent the container itself from accessing/executing the `init.sh` script.
 
 > [!IMPORTANT]  
 > SELinux can block container access even with correct mounts. Disabling SELinux (`--security-opt`) can bypass this restriction.
