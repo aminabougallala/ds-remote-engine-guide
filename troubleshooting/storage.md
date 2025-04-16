@@ -1,6 +1,6 @@
-# Insufficient Storage for Remote Engine Container Image
+## Insufficient Storage for Remote Engine Container Image
 
-## Error Message
+### Error Message
 
 ```shell
 Error: writing blob: adding layer with blob "sha256:..." unpacking failed (error: exit status 1; output: open /usr/share/zoneinfo/zone.tab: no space left on device)
@@ -9,7 +9,7 @@ docker run return code: 125.
 
 ---
 
-## Root Cause
+### Root Cause
 
 Podman stores container layers, metadata, and volumes in `/var/lib/containers` for root containers and `$HOME/.local/share/containers` for rootless containers, by default. For Remote Engine installation as either rootful or rootless Podman, it is recommendeded to have at least 50 GB of free space in at least one of these directories.
 
@@ -28,9 +28,9 @@ Filesystem      Size  Used Avail Use% Mounted on
 
 ---
 
-## ✅ Resolution Options
+### ✅ Resolution Options
 
-### Option 1: Clean Up Container Storage
+#### Option 1: Clean Up Container Storage
 
 Free up disk space by removing unused container images:
 
@@ -46,13 +46,13 @@ podman system prune
 
 ---
 
-### Option 2: Modify Container Storage Location
+#### Option 2: Modify Container Storage Location
 
 If `/var` is full, use another mounted volume for container storage.
 
 ---
 
-#### Part 1: Mount a New Volume
+##### Part 1: Mount a New Volume
 
 1. Check available volumes:
 
@@ -90,7 +90,7 @@ If `/var` is full, use another mounted volume for container storage.
 
 ---
 
-#### Part 2: Set Up Storage Directories
+##### Part 2: Set Up Storage Directories
 
 ```bash
 # For rootful Podman
@@ -104,7 +104,7 @@ If you’re unsure, create both.
 
 ---
 
-#### Part 3: Set SELinux Context (Rootful Only)
+##### Part 3: Set SELinux Context (Rootful Only)
 
 Check if SELinux is enforcing:
 
@@ -124,7 +124,7 @@ sudo restorecon -R -v /mnt/data/containers/storage_root
 
 ---
 
-#### Part 4: Adjust Ownership for Rootless Podman
+##### Part 4: Adjust Ownership for Rootless Podman
 
 If the user is `amin`, grant permissions:
 
@@ -134,7 +134,7 @@ sudo chown -R amin:amin /mnt/data/containers/storage_rootless
 
 ---
 
-#### Part 5: Edit `storage.conf`
+##### Part 5: Edit `storage.conf`
 
 Open the config:
 
@@ -156,7 +156,7 @@ sudo nano /etc/containers/storage.conf
 
 ---
 
-### Final Step: Verify Configuration
+#### Final Step: Verify Configuration
 
 Check that Podman recognizes the new storage paths:
 
