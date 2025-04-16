@@ -175,7 +175,5 @@ store:
 
 ---
 
-> [!SUCCESS]  
-> You’re all set! The Remote Engine container image should now install without storage-related errors.
 
 ✅ You’re all set! The Remote Engine container image should now install successfully using the new storage path.
