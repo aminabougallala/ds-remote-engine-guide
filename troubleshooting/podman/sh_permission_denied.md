@@ -10,11 +10,9 @@ ERROR: Could not start container amin-aws_runtime in 250 seconds, aborting.
 ## Engine logs
 
 ```bash
-[root@ip-172-31-19-185 docker] sudo podman logs test-engine_runtime
+[root@ip-172-31-19-185 docker] podman logs amin-aws_runtime
 /bin/bash: line 1: /px-storage/init-volume.sh: Permission denied
 /bin/bash: line 1: /px-storage/startup.sh: Permission denied
-[root@ip-172-31-19-185 docker] getenforce
-Enforcing
 ---
 ```
 
