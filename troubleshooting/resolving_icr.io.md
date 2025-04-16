@@ -1,10 +1,13 @@
-## Unable to Pull Images from IBM Cloud Container Registry (`icr.io`)
+# Unable to Pull Images from IBM Cloud Container Registry (`icr.io`)
 
+## Root Cause
 `icr.io` not resolving may be an issue with the default DNS server used by the virtual machine. We've tested on a different machine using IBM Cloud and this is how we can work around it:
 
 ---
 
-### Part One
+## Resolution
+
+###Part 1
 
 Use `dig` to query A record for `icr.io` using Google DNS:
 
@@ -26,7 +29,7 @@ echo "169.62.37.243 icr.io" | sudo tee -a /etc/hosts
 
 ---
 
-### Part Two
+### Part 2
 
 Query DNS for `dd2.icr.io`:
 
