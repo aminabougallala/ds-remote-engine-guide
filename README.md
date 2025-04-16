@@ -2,7 +2,7 @@
 
 A curated collection of troubleshooting tips, best practices, and must-know commands for working with DataStage Remote Engine.
 
-# What's Inside
+### What's Inside
 
 - **Troubleshooting:** Common issues and how to resolve them
 - **Best Practices:** Deployment, performance tuning, and more
