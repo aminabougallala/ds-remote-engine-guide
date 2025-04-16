@@ -1,6 +1,6 @@
-# [Product] Knowledge Hub
+# DataStage Remote Engine Knowledge Hub
 
-A curated collection of troubleshooting tips, best practices, and must-know commands for working with [Product Name].
+A curated collection of troubleshooting tips, best practices, and must-know commands for working with DataStage Remote Engine.
 
 ## What's Inside
 
