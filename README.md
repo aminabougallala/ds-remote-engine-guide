@@ -5,7 +5,7 @@ A curated collection of troubleshooting tips, best practices, and must-know comm
 ### What's Inside
 
 - **Troubleshooting:** Common issues and how to resolve them
-- **Best Practices:** Deployment, performance tuning, and more
+- **Best Practices:** Deployment, common Q&A, and more
 - **Sample Packages:** Frequently used CLI and admin commands
 
 # Table of Contents 
