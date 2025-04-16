@@ -28,7 +28,7 @@ Filesystem      Size  Used Avail Use% Mounted on
 
 ---
 
-## ✅ Resolution Options
+## Resolution 
 
 ### Option 1: Clean Up Container Storage
 
