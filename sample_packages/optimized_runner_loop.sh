@@ -1,4 +1,4 @@
-#Run pipelines in loop using cpdctl
+#Run optimized runner pipelines in loop using cpdctl
 #!/bin/bash
 
 # Loop through all provided arguments
