@@ -29,14 +29,19 @@ cat "/sys/fs/cgroup/user.slice/user-$(id -u).slice/user@$(id -u).service/cgroup.
 memory pids
 ```
 
-3. If `cpu` and `cpuset` are missing, add them:
+3. If `cpu` and `cpuset` are missing, add them by creating this file:
 
 ```bash
 sudo mkdir -p /etc/systemd/system/user@.service.d/
+sudo touch /etc/systemd/system/user@.service.d/delegate.conf
+```
+
+4. Edit the file: 
+```bash
 sudo nano /etc/systemd/system/user@.service.d/delegate.conf
 ```
 
-Insert the following:
+5. Insert the following:
 
 ```ini
 [Service]
