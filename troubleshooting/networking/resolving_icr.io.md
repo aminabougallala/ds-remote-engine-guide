@@ -7,7 +7,7 @@
 
 ## Resolution
 
-###Part 1
+### Part 1
 
 Use `dig` to query A record for `icr.io` using Google DNS:
 
