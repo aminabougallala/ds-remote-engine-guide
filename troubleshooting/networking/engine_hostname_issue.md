@@ -1,6 +1,6 @@
 # Job Failure Due to Local Hostname Binding in /etc/hosts
 
-##DataStage Job Log Error Message
+## DataStage Job Log Error Message
 
 ```text
 **** Startup error on node1  connecting with conductor on 172.28.8.119 with cookie 1738260492.844000.1bb1e:  unable to connect to port 10003  on conductor; socket = 0, Bad file descriptor
