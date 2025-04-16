@@ -1,4 +1,4 @@
-# Issue 103: Insufficient subgids/subuids for User Namespace
+# Insufficient subgids/subuids for User Namespace
 
 ##Error Message
 
