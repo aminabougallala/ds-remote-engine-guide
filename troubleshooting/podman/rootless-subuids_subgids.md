@@ -25,7 +25,7 @@ sudo yum -y install shadow-utils
 2. Edit `/etc/subuid`:
 
 ```bash
-sudo vi /etc/subuid
+sudo nano /etc/subuid
 ```
 
 Add or modify line (e.g., for user `etlpoc`):
@@ -37,7 +37,7 @@ etlpoc:100000:1001321001
 3. Edit `/etc/subgid`:
 
 ```bash
-sudo vi /etc/subgid
+sudo nano /etc/subgid
 ```
 
 Add or modify line similarly:
