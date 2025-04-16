@@ -1,6 +1,6 @@
 # Insufficient subgids/subuids for User Namespace
 
-##Error Message
+## Error Message
 
 ```shell
 Error: writing blob: adding layer with blob "sha256:a9089747d5ad": potentially insufficient UIDs or GIDs...
@@ -8,13 +8,13 @@ Error: writing blob: adding layer with blob "sha256:a9089747d5ad": potentially i
 
 ---
 
-##Root Cause
+## Root Cause
 
 Rootless Podman requires specific UID/GID ranges in `/etc/subuid` and `/etc/subgid`.
 
 ---
 
-##Resolution
+## Resolution
 
 1. Ensure `shadow-utils` is installed:
 
