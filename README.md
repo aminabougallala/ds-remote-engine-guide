@@ -6,7 +6,7 @@ A curated collection of troubleshooting tips, best practices, and must-know comm
 
 - **Troubleshooting:** Common issues and how to resolve them
 - **Best Practices:** Deployment, performance tuning, and more
-- **Hot Commands:** Frequently used CLI and admin commands
+- **Sample Packages:** Frequently used CLI and admin commands
 
 # Table of Contents 
 
