@@ -1,5 +1,4 @@
-# Remote Engine not starting after 250 seconds 
-## (******.sh: Permission Denied)
+# Remote Engine not starting after 250 seconds (Permission Denied)
 
 ## Error Message
 ```text
