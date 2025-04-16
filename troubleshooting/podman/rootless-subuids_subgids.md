@@ -10,7 +10,7 @@ Error: writing blob: adding layer with blob "sha256:a9089747d5ad": potentially i
 
 ## Root Cause
 
-Rootless Podman requires specific UID/GID ranges in `/etc/subuid` and `/etc/subgid`.
+Rootless Podman requires specific UID/GID ranges in `/etc/subuid` and `/etc/subgid` for the Remote Engine container to run.
 
 ---
 
