@@ -77,7 +77,7 @@ export VOLUME_DIR=test/docker/volumes
 
 ---
 
-### Option 3: Disable SELinux Enforcement
+### Disable SELinux Enforcement
 
 Even if the volume directory is mounted correctly, SELinux can prevent the container from accessing/executing the `init.sh` script.
 
