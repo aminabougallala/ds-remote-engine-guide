@@ -13,7 +13,6 @@ ERROR: Could not start container amin-aws_runtime in 250 seconds, aborting.
 [root@ip-172-31-19-185 docker] podman logs amin-aws_runtime
 /bin/bash: line 1: /px-storage/init-volume.sh: Permission denied
 /bin/bash: line 1: /px-storage/startup.sh: Permission denied
----
 ```
 
 ## Root Cause
